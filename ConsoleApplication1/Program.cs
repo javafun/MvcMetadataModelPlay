@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -15,9 +16,9 @@ namespace ConsoleApplication1
             ModelMetadata bar = GetModelMetadata<Model>("Bar");
             ModelMetadata baz = GetModelMetadata<Model>("Baz");
 
-            Console.WriteLine("Foo: {0}",foo.TemplateHint ?? "N/A");
-            Console.WriteLine("Bar: {0}", bar.TemplateHint ?? "N/A");
-            Console.WriteLine("Baz: {0}", baz.TemplateHint ?? "N/A");
+            Console.WriteLine("Foo: {0}",foo.IsReadOnly);
+            Console.WriteLine("Bar: {0}", bar.IsReadOnly);
+            Console.WriteLine("Baz: {0}", baz.IsReadOnly);
         }
 
         static ModelMetadata GetModelMetadata<TModel>(string propertyName)
@@ -33,13 +34,15 @@ namespace ConsoleApplication1
 
     public class Model
     {
+        [ReadOnly(true)]
         public string Foo { get; set; }
 
-        [UIHint("Template A")]
-        [UIHint("Template B")]
+        [Editable(true)]
+        [ReadOnly(true)]
         public string Bar { get; set; }
         
-        [UIHint("Template A")]
+        [Editable(false)]
+        [ReadOnly(false)]
         public string Baz { get; set; }
     }
 }
